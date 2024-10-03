@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: postsync-job
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+spec:
+  template:
+    spec:
+      containers:
+        - name: postsync-job-success
+          image: ubuntu     
+          command: 
+            - /bin/bash
+            - -c
+            - |
+              echo "This is Post-Sync"
+      restartPolicy: Never
