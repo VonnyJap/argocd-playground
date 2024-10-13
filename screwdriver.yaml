@@ -1,0 +1,25 @@
+shared:
+  image: node:14
+
+jobs:
+  main:
+    image: docker:latest
+    environment:
+      DOCKER_USERNAME: vonnyjap
+    secrets:
+      - DOCKER_PASSWORD
+    steps:
+      - build: |
+          cd webserver
+          docker build -t temperature-server .
+      - test: |
+          docker run -p 8080:8080 temperature-server
+          status_code=$(curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8080/temperature)
+          if [ "$status_code" -ne 200 ]; then
+            echo "Test failed with status code $status_code"
+            exit 1
+          fi
+      - publish:
+          docker tag temperature-server vonnyjap/temperature-server:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker push vonnyjap/temperature-server:latest
