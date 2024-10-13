@@ -3,7 +3,7 @@ shared:
 
 jobs:
   main:
-    image: docker:latest
+    image: docker:dind
     environment:
       DOCKER_USERNAME: vonnyjap
     secrets:
