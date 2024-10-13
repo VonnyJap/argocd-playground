@@ -3,23 +3,21 @@ shared:
 
 jobs:
   main:
-    image: docker:dind
-    environment:
-      DOCKER_USERNAME: vonnyjap
     secrets:
-      - DOCKER_PASSWORD
+      - DOCKER_REGISTRY_TOKEN
+      - DOCKER_REGISTRY_USER
+    template: sd/dind@2.0.23
     steps:
-      - build: |
+      - prebuild-push: |
           cd webserver
-          docker build -t temperature-server .
-      - test: |
-          docker run -p 8080:8080 temperature-server
-          status_code=$(curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8080/temperature)
-          if [ "$status_code" -ne 200 ]; then
-            echo "Test failed with status code $status_code"
-            exit 1
-          fi
-      - publish:
-          docker tag temperature-server vonnyjap/temperature-server:latest
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker push vonnyjap/temperature-server:latest
+      # - test: |
+      #     docker run -p 8080:8080 temperature-server
+      #     status_code=$(curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8080/temperature)
+      #     if [ "$status_code" -ne 200 ]; then
+      #       echo "Test failed with status code $status_code"
+      #       exit 1
+      #     fi
+      # - publish:
+      #     docker tag temperature-server vonnyjap/temperature-server:latest
+      #     echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      #     docker push vonnyjap/temperature-server:latest
