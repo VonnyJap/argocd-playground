@@ -7,6 +7,9 @@ jobs:
       - DOCKER_REGISTRY_TOKEN
       - DOCKER_REGISTRY_USER
     template: sd/dind@2.0.23
+    environment:
+      DOCKER_REPO: vonnyjap/temperature-server
+      DOCKER_MULTI_PLATFORM_BUILDS_ENABLED: 1
     steps:
       - prebuild-push: |
           cd webserver
