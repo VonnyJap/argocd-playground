@@ -1,5 +1,9 @@
 jobs:
   main:
+    annotations:
+      screwdriver.cd/dockerEnabled: true
+      screwdriver.cd/dockerCpu: LOW
+      screwdriver.cd/dockerRam: LOW
     secrets:
       - DOCKER_REGISTRY_TOKEN
       - DOCKER_REGISTRY_USER
