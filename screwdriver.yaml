@@ -1,6 +1,3 @@
-shared:
-  image: node:14
-
 jobs:
   main:
     secrets:
