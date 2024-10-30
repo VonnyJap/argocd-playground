@@ -1,0 +1,8 @@
+replicaCount: 2
+
+image:
+  repository: vonnyjap/temperature-server
+  tag: latest
+
+service:
+  type: ClusterIP
